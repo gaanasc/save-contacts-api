@@ -50,7 +50,8 @@ class ContactsController(
     fun updateContacts(@PathVariable("id") id: Long, @RequestBody newContacts: Contacts): Contacts {
         val contacts = repository.findById(id).orElseThrow {
             SaveContactsNotFoundException(
-                "O contato de número $id não existe")
+                "Ja existe um contato com o id $id, ou o mesmo não existe"
+            )
         }
 
         contacts.apply {
