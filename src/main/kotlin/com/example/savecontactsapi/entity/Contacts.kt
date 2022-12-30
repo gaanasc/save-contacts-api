@@ -1,44 +1,33 @@
 package com.example.savecontactsapi.entity
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.Email
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "contacts")
-class Contacts(
+data class Contacts(
 
-    @field:Id
-    @field:GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @field:NotNull
-    @field:Size(min = 5, max = 50)
+    @Column(nullable = false, length = 70, unique = true)
     var condominio: String,
 
-    @field:NotNull
-    @field:Email
+    @Column(nullable = false, length = 40)
     var email: String,
 
-    @field:NotNull
+    @Column(nullable = false, length = 100)
     var endereco: String,
 
-    @field: NotNull
-    @field:Size(min = 8, max = 11)
+    @Column(nullable = false, length = 15)
     var tel_sindico: Long,
 
-
-    @field: Column
-    @field:Size(min = 8, max = 11)
+    @Column(nullable = true, length = 15)
     var cel_sindico: Long,
 
-    @field: NotNull
-    @field:Size(min = 8, max = 11)
+    @Column(nullable = false, length = 15)
     var tel_zelador: Long,
 
-    @field: Column
-    @field:Size(min = 8, max = 11)
-    var cel_zelador: Long,
-
+    @Column(nullable = true, length = 15)
+    var cel_zelador: Long
 )
