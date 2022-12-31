@@ -64,5 +64,3 @@ class ContactsService(
         repository.delete(contacts)
     }
 }
-//TODO: verificar duplicidade de nome de
-// condominio, regra de cadastrar uma nova ou não
