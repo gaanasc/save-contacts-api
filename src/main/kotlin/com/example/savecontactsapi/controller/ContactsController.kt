@@ -1,10 +1,8 @@
 package com.example.savecontactsapi.controller
 
 import com.example.savecontactsapi.entity.Contacts
-import com.example.savecontactsapi.exceptions.SaveContactsNotFoundException
 import com.example.savecontactsapi.repository.ContactsRepository
 import com.example.savecontactsapi.service.ContactsService
-import jakarta.persistence.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -23,7 +21,7 @@ class ContactsController(
     @GetMapping(
         value = ["/contacts"]
     )
-    fun getContactsList(): List<Contacts> {
+    fun getList(): List<Contacts> {
         return service.findAllContacts()
     }
 
@@ -31,7 +29,7 @@ class ContactsController(
     @GetMapping(
         value = ["/{id}"]
     )
-    fun getIdContacts(@PathVariable("id") id: Long): Optional<Contacts> {
+    fun getId(@PathVariable("id") id: Long): Optional<Contacts> {
         return service.findContactsBy(id)
     }
 
@@ -39,39 +37,23 @@ class ContactsController(
     @PostMapping(
         value = ["/"]
     )
-    fun createContacts(@RequestBody contacts: Contacts): Contacts {
-        return repository.save(contacts)
+    fun create(@RequestBody contacts: Contacts): Contacts {
+        return service.saveContacts(contacts)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(
         value = ["/{id}"]
     )
-    fun updateContacts(@PathVariable("id") id: Long, @RequestBody newContacts: Contacts): Contacts {
-        val contacts = repository.findById(id).orElseThrow {
-            SaveContactsNotFoundException(
-                "Ja existe um contato com o id $id, ou o mesmo não existe"
-            )
-        }
-
-        contacts.apply {
-            this.condominio = newContacts.condominio
-            this.email = newContacts.email
-            this.endereco = newContacts.endereco
-            this.tel_sindico = newContacts.tel_sindico
-            this.cel_sindico = newContacts.cel_sindico
-            this.tel_zelador = newContacts.tel_zelador
-            this.cel_zelador = newContacts.cel_zelador
-        }
-        return repository.save(contacts)
+    fun update(@PathVariable("id") id: Long, @RequestBody newContacts: Contacts): Contacts {
+        return service.updateContacts(id, newContacts)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(
         value = ["/{id}"]
     )
-    fun deleteContacts(@PathVariable("id") id: Long) {
-        val contacts = repository.findById(id).orElseThrow { EntityNotFoundException() }
-        repository.delete(contacts)
+    fun delete(@PathVariable("id") id: Long) {
+        return service.deleteContacts(id)
     }
 }
