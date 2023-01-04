@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@CrossOrigin(allowCredentials = "")
 @RequestMapping("/save-contacts")
 class ContactsController(
-    @Autowired
-    private val repository: ContactsRepository,
     @Autowired
     private val service: ContactsService
 ) {
